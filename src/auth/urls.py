@@ -8,7 +8,7 @@ router.register(r'users', UserViewSet)
 
 urlpatters = [
     url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='django_rest')),
+    url(r'^api-auth/', include('rest_auth.urls')),
     url(r'^auth/token/verify', verify_jwt_token),
     url(r'^auth/token', obtain_jwt_token),
 ]

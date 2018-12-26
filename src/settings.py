@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_auth',
     'phonenumber_field',
     'src',
     'src.auth',
@@ -132,6 +133,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+REST_USE_JWT = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -141,3 +144,6 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '..', 'static')
 
 AUTH_USER_MODEL = 'tech_auth.BurnerUser'
+#Rest Auth Stuff
+OLD_PASSWORD_FIELD_ENABLED = True
+USER_DETAILS_SERIALIZER = 'src.auth.serializers.user_serializer.UserSerializer'
