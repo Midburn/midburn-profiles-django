@@ -5,12 +5,12 @@
 ### Python 3.7 
 
 Usage of virtualenv is recommended
-
-`pip install -r requirements.txt`
-`python manage.py migrate`
-`python manage.py createsuperuser`
-`python manage.py runserver`
-
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
 Or using honcho
 
 `honcho start -f profile.dev`

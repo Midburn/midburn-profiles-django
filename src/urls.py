@@ -13,13 +13,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from django.core.exceptions import PermissionDenied
 from django.urls import path
-from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from .auth.urls import urlpatters as auth_urls
+from django.conf.urls import include, url
+from django.contrib import admin
+from oscar.app import application as oscar
+from oscarapi.app import application as oscar_api
+from django.conf import settings
+from django.conf.urls.static import static
+
+def forbidden(r):
+    raise PermissionDenied
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('tech_admin/', admin.site.urls),
+    url(r'oscar-api', oscar_api.urls),
+    url(r'commerce/$', forbidden),
+    url(r'commerce/(?!dashboard).*$', forbidden),
+    url(r'commerce/', oscar.urls),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url(r'^docs/', include_docs_urls(title='Midburn Tech API', public=False))
-] + auth_urls
+] + auth_urls + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
