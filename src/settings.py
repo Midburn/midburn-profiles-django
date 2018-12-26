@@ -147,3 +147,79 @@ AUTH_USER_MODEL = 'tech_auth.BurnerUser'
 #Rest Auth Stuff
 OLD_PASSWORD_FIELD_ENABLED = True
 USER_DETAILS_SERIALIZER = 'src.auth.serializers.user_serializer.UserSerializer'
+
+#####################################################
+# oscardemo modifications for 1.initial-setup       #
+#####################################################
+
+# standard django static and media settings
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+# this includes all the oscar default settins
+from oscar.defaults import *
+
+from oscar import OSCAR_MAIN_TEMPLATE_DIR
+from oscar import get_core_apps
+
+TEMPLATES[0]['DIRS'] = [
+    os.path.join(BASE_DIR, 'templates'),
+    # this "hack" allows to access the oscar templates using standard path e.g. /home.html
+    # but also prefixed with /oscar/ e.g. /oscar/home.html
+    # this allows to extend oscar templates, we will see an example of this later
+    OSCAR_MAIN_TEMPLATE_DIR
+]
+
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
+]
+
+INSTALLED_APPS += [
+    'django.contrib.sites',
+    'django.contrib.flatpages',
+    # django-widget-tweaks allows some nice customization of html forms rendring from templates
+    # it's used in the default oscar temlpates
+    'widget_tweaks',
+    # django oscar is split into many apps
+] + get_core_apps()
+
+SITE_ID = 1
+
+MIDDLEWARE += [
+    'oscar.apps.basket.middleware.BasketMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+]
+
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+#     'rest_framework.authentication.SessionAuthentication',
+# )
+
+# haystack is a search engine module for django
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # django-oscar only supports SimpleEngine which has no special dependencies or SolrEngine
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
+
+# django oscar recommends using ATOMIC_REQUESTS
+DATABASES['default']['ATOMIC_REQUESTS'] = True
+
+# oscar has status for entire order, or per line
+# the status names and pipeline is fully customizable here
+OSCAR_INITIAL_ORDER_STATUS = 'Pending'
+OSCAR_INITIAL_LINE_STATUS = 'Pending'
+OSCAR_ORDER_STATUS_PIPELINE = {
+    'Pending': ('Being processed', 'Cancelled',),
+    'Being processed': ('Processed', 'Cancelled',),
+    'Cancelled': (),
+}
+
+OSCAR_DEFAULT_CURRENCY = "ILS"

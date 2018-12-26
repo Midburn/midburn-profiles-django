@@ -27,6 +27,7 @@ RUN apt-get update && \
 	python3-setuptools \
 	python3-pip \
 	nginx \
+	libjpeg-dev \
 	supervisor \
 	sqlite3 && \
 	pip3 install -U pip setuptools && \
@@ -42,6 +43,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 
+
 # setup all the configfiles
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY nginx-app.conf /etc/nginx/sites-available/default
@@ -49,8 +51,9 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 
 # add (the rest of) our code
 COPY . .
-RUN python3 manage.py collectstatic
 RUN python3 manage.py migrate
+RUN python3 manage.py collectstatic
+RUN python3 manage.py oscar_populate_countries
 RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('example@example.com', 'examplepassword')" | python3 manage.py shell
 
 EXPOSE 80
