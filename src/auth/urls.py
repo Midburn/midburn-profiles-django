@@ -7,8 +7,8 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatters = [
-    url(r'^api/auth/', include(router.urls)),
-    url(r'^api-auth/', include('rest_auth.urls')),
-    url(r'^auth/token/verify', verify_jwt_token),
-    url(r'^auth/token', obtain_jwt_token),
+    url(r'^users/', include(router.urls)),
+    url(r'^web-login/', include('rest_auth.urls')),
+    url(r'^token/verify', verify_jwt_token),
+    url(r'^token', obtain_jwt_token),
 ]

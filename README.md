@@ -14,3 +14,9 @@ python manage.py runserver
 Or using honcho
 
 `honcho start -f profile.dev`
+
+## Usage
+
+http://localhost:7550/api/web-login/login
+
+And then http://localhost:7550/docs
