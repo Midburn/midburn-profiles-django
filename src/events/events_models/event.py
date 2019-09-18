@@ -8,6 +8,6 @@ class BurnEvent(models.Model):
     name = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    #TBD :P
-    etc = models.TextField(null=True, blank=True)
+
+    details = models.TextField()
 
