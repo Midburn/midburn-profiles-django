@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'src',
     'src.auth',
     'src.events',
+    'src.tickets',
 ]
 
 MIDDLEWARE = [

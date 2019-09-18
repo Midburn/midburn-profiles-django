@@ -11,8 +11,8 @@ class UserTicket(models.Model):
 
     # For barcode all you need is to encode the UUID into a barcode
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(BurnerUser, null=False, related_name='tickets')
-    ticket_type = models.ForeignKey(TicketType, null=False, related_name='user_tickets')
+    user = models.ForeignKey(BurnerUser, null=False, related_name='tickets', on_delete=models.PROTECT)
+    ticket_type = models.ForeignKey(TicketType, null=False, related_name='user_tickets', on_delete=models.PROTECT)
     purchase_time = models.DateTimeField(default=datetime.now)
     used = models.BooleanField(default=False)
 

@@ -18,12 +18,13 @@ from django.urls import path
 from rest_framework.documentation import include_docs_urls
 
 from src.events.urls import events_url_patterns
+from src.tickets.urls import tickets_url_patterns
 from .auth.urls import urlpatters as auth_urls
 from django.conf.urls import include, url
 from django.contrib import admin
 
 
-api_urls = auth_urls + events_url_patterns
+api_urls = auth_urls + events_url_patterns + tickets_url_patterns
 
 urlpatterns = [
     path('tech_admin/', admin.site.urls),

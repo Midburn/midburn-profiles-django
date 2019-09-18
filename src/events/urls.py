@@ -6,5 +6,5 @@ router = routers.DefaultRouter()
 router.register(r'events', EventsViewSet)
 
 events_url_patterns = [
-    url(r'^events/', include(router.urls)),
+    url(r'^', include(router.urls)),
 ]
