@@ -32,6 +32,6 @@ Or using honcho
 
 ## Usage
 
-http://localhost:7550/api/web-login/login
+http://localhost:8000/api/auth/login
 
-And then http://localhost:7550/docs
+And then http://localhost:8000/docs

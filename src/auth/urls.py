@@ -9,7 +9,7 @@ router.register(r'', UserViewSet)
 
 urlpatters = [
     url(r'^users/', include(router.urls)),
-    url(r'^web-login/', include('rest_auth.urls')),
+    url(r'^auth/', include('rest_auth.urls')),
     url(r'^token/verify', verify_jwt_token),
     url(r'^token', obtain_jwt_token),
 ]
