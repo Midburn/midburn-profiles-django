@@ -29,5 +29,8 @@ api_urls = auth_urls + events_url_patterns + tickets_url_patterns
 urlpatterns = [
     path('tech_admin/', admin.site.urls),
     url(r'^docs/', include_docs_urls(title='Midburn Tech API', public=False)),
+    url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     url(r'^api/', include(api_urls)),
+    # url(r'^auth/', include(auth_urls)),
+
 ]
