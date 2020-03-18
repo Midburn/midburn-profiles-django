@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'src',
     'src.auth',
-    'src.events',
-    'src.tickets',
     'allauth',
     'allauth.account',
 ]
@@ -54,7 +52,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -62,7 +59,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'src.urls'
 TEMPLATES_ROOT = os.path.join(BASE_DIR, 'src/auth/templates')
-
 
 TEMPLATES = [
     {
@@ -102,6 +98,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7)
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -125,24 +125,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -150,14 +145,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, '..', 'static')
-
 AUTH_USER_MODEL = 'tech_auth.BurnerUser'
 # Rest Auth Stuff
+
 OLD_PASSWORD_FIELD_ENABLED = True
 USER_DETAILS_SERIALIZER = 'src.auth.serializers.user_serializer.UserSerializer'
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'src.auth.serializers.register_serializer.RegisterSerializer',
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'src.auth.serializers.login_serializer.MidburnLoginSerializer',
 }
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'src.auth.serializers.register_serializer.MidburnRegisterSerializer',
+}
+
 ACCOUNT_ADAPTER = 'src.auth.adapters.user_adapter.CustomAccountAdapter'
 
 SITE_ID = 1
@@ -177,6 +178,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-EMAIL_CONFIRMATION_HMAC = False
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_confirm_complete')
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_confirm_complete')
+ACCOUNT_LOGOUT_ON_GET = True
+
+REST_USE_JWT = True

@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from rest_auth.registration.serializers import RegisterSerializer as registerSerializer
-from phonenumber_field.modelfields import PhoneNumberField
+from rest_auth.registration.serializers import RegisterSerializer
 
 
-class RegisterSerializer(registerSerializer):
+class MidburnRegisterSerializer(RegisterSerializer):
+
     def update(self, instance, validated_data):
         pass
 
