@@ -1,1 +1,0 @@
-from .events_models.event import BurnEvent

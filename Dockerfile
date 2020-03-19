@@ -53,8 +53,6 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 COPY . .
 RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic
-RUN python3 manage.py oscar_populate_countries
-RUN echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('example@example.com', 'examplepassword')" | python3 manage.py shell
 
 EXPOSE 80
 CMD ["supervisord", "-n"]
