@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 from rest_auth.views import LoginView, LogoutView, UserDetailsView, PasswordChangeView
 
 from .auth.urls import users_api_router
@@ -30,5 +31,10 @@ urlpatterns = [
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     url(r'^docs/', include_docs_urls(title='Midburn API', public=False)),
-    url(r'^api/v1/', include(users_api_router.urls))
+    url(r'^api/v1/', include(users_api_router.urls)),
+    #required for allauth flow
+    url(r'^account-email-verification-sent/$', TemplateView.as_view(),
+        name='account_email_verification_sent'),
+    url(r'^account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(),
+        name='account_confirm_email'),
 ]

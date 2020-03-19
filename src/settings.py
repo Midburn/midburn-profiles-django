@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import datetime
 import os
 from django.urls import reverse_lazy
+from os import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -86,11 +87,11 @@ WSGI_APPLICATION = 'src.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'midburn',
-        'USER': 'midburn_admin',
-        'PASSWORD': 'midburn_admin',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': environ.get('DB_NAME', 'midburn'),
+        'USER': environ.get('DB_USER', 'midburn_admin'),
+        'PASSWORD': environ.get('DB_PASSWORD', 'midburn_admin'),
+        'HOST': environ.get('DB_HOST', 'localhost'),
+        'PORT': environ.get('DB_PORT', ''),
     }
 }
 
@@ -151,6 +152,7 @@ AUTH_USER_MODEL = 'tech_auth.BurnerUser'
 # Rest Auth Stuff
 
 OLD_PASSWORD_FIELD_ENABLED = True
+
 USER_DETAILS_SERIALIZER = 'src.auth.serializers.user_serializer.UserSerializer'
 
 REST_AUTH_SERIALIZERS = {
@@ -172,12 +174,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'meirdahantheman@gmail.com'
-EMAIL_HOST_PASSWORD = 'Meirdahan13021302'
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'meirdahantheman@gmail.com'
+DEFAULT_FROM_EMAIL = 'no-reply@midburn.org'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -186,3 +183,7 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_USERNAME_REQUIRED = False
 
 REST_USE_JWT = True
+
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+SENDGRID_RESET_PASSWORD_TEMPLATE = 'd-37141992ef004f29b182c27644092837'
+SENDGRID_VERIFY_EMAIL = 'd-a606e80817bd4fad98b9cf01886041e5'

@@ -6,4 +6,4 @@ class AuthConfig(AppConfig):
     label = 'tech_auth'
 
     def ready(self):
-        from .signals.password_reset_email_sender import reset_password_token_created
+        from .signals import email_confirmed, email_confirmation_sent, password_reset_token_created
