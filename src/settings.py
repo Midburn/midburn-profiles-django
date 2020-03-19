@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_rest_passwordreset',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
@@ -124,6 +125,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -153,6 +155,8 @@ USER_DETAILS_SERIALIZER = 'src.auth.serializers.user_serializer.UserSerializer'
 
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'src.auth.serializers.login_serializer.MidburnLoginSerializer',
+    'USER_DETAILS_SERIALIZER': 'src.auth.serializers.user_serializer.UserSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'src.auth.serializers.reset_password_serializer.PasswordSerializer',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
@@ -178,8 +182,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_confirm_complete')
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_confirm_complete')
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_USERNAME_REQUIRED = False
 
 REST_USE_JWT = True
