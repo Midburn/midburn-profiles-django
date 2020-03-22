@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:16.04
-
-MAINTAINER Dockerfiles
+FROM ubuntu:bionic-20200219
 
 # Install required packages and remove the apt packages cache when done.
 
@@ -42,8 +40,6 @@ WORKDIR app
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-
-
 # setup all the configfiles
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 COPY nginx-app.conf /etc/nginx/sites-available/default
@@ -51,7 +47,7 @@ COPY supervisor-app.conf /etc/supervisor/conf.d/
 
 # add (the rest of) our code
 COPY . .
-RUN python3 manage.py migrate
+#RUN python3 manage.py migrate
 RUN python3 manage.py collectstatic
 
 EXPOSE 80
