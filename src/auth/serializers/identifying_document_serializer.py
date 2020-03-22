@@ -1,18 +1,19 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from src.auth.auth_models.user import UserStatus
-from src.fields.django_rest_enumfield import EnumField
+from src.auth.auth_models.identifying_document import IdentifyingDocument
 
-User = get_user_model()
+class IDSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
 
-
-class UserSerializer(serializers.ModelSerializer):
-    status = EnumField(choices=UserStatus)
+    def validate(self, data):
+        if data['identification_type'] != 'tz':
+            return data
+        else:
+            #TODO: validate Israeli TZ
+            return data
 
     class Meta:
-        model = User
-        fields = ('pk', 'email', 'first_name', 'last_name', 'city', 'country_code', 'address',
-                  'primary_phone_number', 'status')
-
-        read_only_fields = ('pk', 'email', 'status')
+        model = IdentifyingDocument
+        fields = ('id', 'identification_number', 'identification_type', 'passport_country', 'user')
